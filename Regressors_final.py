@@ -265,7 +265,7 @@ def spatial_filter(df_all_bands, original_shape,window,path_LCLU,info,GRD_SLC):
     for i in range(0,num_bands):
         aa = reshaped_data[i]
         #comment line below if no LCLU is to be applied
-        #aa = create_array_for_spacial_filter(aa,width,window,LCLU_reshaped,info)
+        aa = create_array_for_spacial_filter(aa,width,window,LCLU_reshaped,info)
         aa = aa.reshape((height,width))
         aa = ndimage.median_filter(aa,size=window)
         a_list.append(aa) 
@@ -325,8 +325,6 @@ def Regressor_calc(df_bands,pca_df,df_LCLU,df_CHM,pred_df1,pred_df2,location,LCL
         estimators=[('RF', RF_reg),('XGB',XGB_reg)]
         
         reg = StackingRegressor( estimators=estimators,final_estimator=LinearRegression())
-        
-        reg = XGBRegressor(device='cuda', booster= 'gbtree', n_estimators=100 , max_depth=3, eta=0.1, subsample=1, random_state=rng)
                 
         reg.fit(X_train, y_train)
         
